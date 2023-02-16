@@ -6,6 +6,7 @@ This module contain bot for discord
 @Author: Arist0v
 """
 import discord
+from random import randint
 
 
 class Marvin(discord.Client):
@@ -24,6 +25,7 @@ class Marvin(discord.Client):
     async def on_ready(self):
         print(f'{self.user} has connected to Discord')
 
+
     async def on_message(self, message):
         if message.author == self.user:
             return
@@ -35,12 +37,16 @@ class Marvin(discord.Client):
     async def __response(self, message, response):
             await message.channel.send(response)
 
+    def __random_start(self, trigger = 1, max_range=5) -> bool:
+        random_number = randint(1, max_range)
+        return trigger == random_number
+
     async def __pi(self, message):
         response = "3.14159"
         splited_lower_message = message.content.lower().split(" ")
         triggers = ["pis", "pi"]
         for trigger in triggers:
-            if trigger in splited_lower_message:
+            if trigger in splited_lower_message and self.__random_start():
                 await self.__response(message, response)
 
     async def __tp(self, message):
@@ -48,7 +54,7 @@ class Marvin(discord.Client):
         splited_lower_message = message.content.lower().split(" ")
         triggers = ["tp", "tps"]
         for trigger in triggers:
-            if trigger in splited_lower_message:
+            if trigger in splited_lower_message and self.__random_start():
                 await self.__response(message, response)
 
     async def __answer(self, message):
@@ -63,6 +69,6 @@ class Marvin(discord.Client):
             if "?" in word:
                 should_response = True
 
-        if should_response:
+        if should_response and self.__random_start():
             await self.__response(message, response)
 
